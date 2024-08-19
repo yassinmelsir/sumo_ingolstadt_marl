@@ -14,6 +14,10 @@ log_filepath = f"{output_dir}/sim_log.log"
 network_data_filepath = f"{output_dir}/vehicle_data.csv"
 light_data_filepath = f"{output_dir}/light_info.csv"
 
+os.makedirs(os.path.dirname(log_filepath), exist_ok=True)
+os.makedirs(os.path.dirname(light_data_filepath), exist_ok=True)
+os.makedirs(os.path.dirname(network_data_filepath), exist_ok=True)
+
 sumo_cmd = "sumo" if not gui else "sumo-gui"
 
 if gui:
@@ -21,10 +25,11 @@ if gui:
     print("stdout:", result.stdout)
     print("stderr:", result.stderr)
 
+
 sumoCmd = [sumo_cmd, "-c", config_filepath, "-l", log_filepath]
 traci.start(sumoCmd)
 
-os.makedirs(os.path.dirname(light_data_filepath), exist_ok=True)
+
 with open(light_data_filepath, mode='w', newline='') as log_file:
     log_writer = csv.writer(log_file)
     log_writer.writerow(["Traffic Light Id", "Controlled Lanes", "Number of Phases"])
@@ -37,7 +42,6 @@ with open(light_data_filepath, mode='w', newline='') as log_file:
         num_phases = len(traci.trafficlight.getCompleteRedYellowGreenDefinition(tl_id)[0].phases)
         log_writer.writerow([tl_id, controlled_lanes, num_phases])
 
-os.makedirs(os.path.dirname(network_data_filepath), exist_ok=True)
 with open(network_data_filepath, mode='w', newline='') as log_file:
     log_writer = csv.writer(log_file)
     log_writer.writerow([
