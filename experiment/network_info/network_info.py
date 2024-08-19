@@ -103,6 +103,10 @@ with open(network_data_filepath, mode='w', newline='') as log_file:
                 vehicle_counts["bicycle"] += 1
             elif vehicle_type == "emergency":
                 vehicle_counts["emergency"] += 1
+            elif vehicle_type == "trailer":
+                vehicle_counts["trailer"] += 1
+            elif vehicle_type == "delivery":
+                vehicle_counts["delivery"] += 1
 
             total_fuel_consumption += traci.vehicle.getFuelConsumption(vid)
             total_co2_emission += traci.vehicle.getCO2Emission(vid)
