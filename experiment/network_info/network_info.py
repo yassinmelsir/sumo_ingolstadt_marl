@@ -5,14 +5,14 @@ import csv
 import subprocess
 
 sim_name = '2023-06-19'
-output_dir = f"./{sim_name}"
 config_filepath = "../../sumo/simulation/Ingolstadt SUMO 365/2023-06-19.sumocfg"
 gui = False
 
+output_dir = os.path.join(".", sim_name)
 
-log_filepath = f"{output_dir}/sim_log.log"
-network_data_filepath = f"{output_dir}/vehicle_data.csv"
-light_data_filepath = f"{output_dir}/light_info.csv"
+log_filepath = os.path.join(output_dir, "sim_log.log")
+network_data_filepath = os.path.join(output_dir, "vehicle_data.csv")
+light_data_filepath = os.path.join(output_dir, "light_info.csv")
 
 os.makedirs(os.path.dirname(log_filepath), exist_ok=True)
 os.makedirs(os.path.dirname(light_data_filepath), exist_ok=True)
