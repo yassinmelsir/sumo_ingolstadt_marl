@@ -1,45 +1,31 @@
+import csv
 import os
 
-import traci
-import csv
-import subprocess
+from experiment.base.base import SumoSimulation
 
 sim_name = '2023-06-19'
 config_filepath = "../../sumo/simulation/Ingolstadt SUMO 365/2023-06-19.sumocfg"
 gui = False
 
-output_dir = os.path.join(".", sim_name)
+simulation = SumoSimulation(sim_name, config_filepath, gui)
 
-log_filepath = os.path.join(output_dir, "sim_log.log")
-network_data_filepath = os.path.join(output_dir, "vehicle_data.csv")
-light_data_filepath = os.path.join(output_dir, "light_info.csv")
-
-os.makedirs(os.path.dirname(log_filepath), exist_ok=True)
+network_data_filepath = os.path.join(simulation.output_dir, "vehicle_data.csv")
+light_data_filepath = os.path.join(simulation.output_dir, "light_info.csv")
 os.makedirs(os.path.dirname(light_data_filepath), exist_ok=True)
 os.makedirs(os.path.dirname(network_data_filepath), exist_ok=True)
 
-sumo_cmd = "sumo" if not gui else "sumo-gui"
-
-if gui:
-    result = subprocess.run(["open", "-a", "XQuartz"], capture_output=True, text=True)
-    print("stdout:", result.stdout)
-    print("stderr:", result.stderr)
-
-
-sumoCmd = [sumo_cmd, "-c", config_filepath, "-l", log_filepath]
-traci.start(sumoCmd)
-
+simulation.start_simulation()
 
 with open(light_data_filepath, mode='w', newline='') as log_file:
     log_writer = csv.writer(log_file)
     log_writer.writerow(["Traffic Light Id", "Controlled Lanes", "Number of Phases"])
 
-    traffic_light_ids = traci.trafficlight.getIDList()
+    traffic_light_ids = simulation.traci.trafficlight.getIDList()
 
     for tl_id in traffic_light_ids:
-        current_state = traci.trafficlight.getRedYellowGreenState(tl_id)
-        controlled_lanes = len(traci.trafficlight.getControlledLanes(tl_id))
-        num_phases = len(traci.trafficlight.getCompleteRedYellowGreenDefinition(tl_id)[0].phases)
+        current_state = simulation.traci.trafficlight.getRedYellowGreenState(tl_id)
+        controlled_lanes = len(simulation.traci.trafficlight.getControlledLanes(tl_id))
+        num_phases = len(simulation.traci.trafficlight.getCompleteRedYellowGreenDefinition(tl_id)[0].phases)
         log_writer.writerow([tl_id, controlled_lanes, num_phases])
 
 with open(network_data_filepath, mode='w', newline='') as log_file:
@@ -65,12 +51,11 @@ with open(network_data_filepath, mode='w', newline='') as log_file:
         "Total Delay (s)"
     ])
 
-    while traci.simulation.getMinExpectedNumber() > 0:
-        traci.simulationStep()
+    while simulation.simulation_running:
+        simulation.step()
 
-        simulation_time = traci.simulation.getTime()
-
-        vehicle_ids = traci.vehicle.getIDList()
+        simulation_time = simulation.traci.simulation.getTime()
+        vehicle_ids = simulation.traci.vehicle.getIDList()
 
         vehicle_counts = {
             "passenger": 0,
@@ -93,7 +78,7 @@ with open(network_data_filepath, mode='w', newline='') as log_file:
         total_delay = 0.0
 
         for vid in vehicle_ids:
-            vehicle_type = traci.vehicle.getVehicleClass(vid)
+            vehicle_type = simulation.traci.vehicle.getVehicleClass(vid)
 
             if vehicle_type == "passenger":
                 vehicle_counts["passenger"] += 1
@@ -112,14 +97,14 @@ with open(network_data_filepath, mode='w', newline='') as log_file:
             elif vehicle_type == "delivery":
                 vehicle_counts["delivery"] += 1
 
-            total_fuel_consumption += traci.vehicle.getFuelConsumption(vid)
-            total_co2_emission += traci.vehicle.getCO2Emission(vid)
-            total_co_emission += traci.vehicle.getCOEmission(vid)
-            total_hc_emission += traci.vehicle.getHCEmission(vid)
-            total_nox_emission += traci.vehicle.getNOxEmission(vid)
-            total_pmx_emission += traci.vehicle.getPMxEmission(vid)
-            total_trip_time += traci.vehicle.getAccumulatedWaitingTime(vid)
-            total_delay += traci.vehicle.getTimeLoss(vid)
+            total_fuel_consumption += simulation.traci.vehicle.getFuelConsumption(vid)
+            total_co2_emission += simulation.traci.vehicle.getCO2Emission(vid)
+            total_co_emission += simulation.traci.vehicle.getCOEmission(vid)
+            total_hc_emission += simulation.traci.vehicle.getHCEmission(vid)
+            total_nox_emission += simulation.traci.vehicle.getNOxEmission(vid)
+            total_pmx_emission += simulation.traci.vehicle.getPMxEmission(vid)
+            total_trip_time += simulation.traci.vehicle.getAccumulatedWaitingTime(vid)
+            total_delay += simulation.traci.vehicle.getTimeLoss(vid)
 
         total_vehicles = sum(vehicle_counts.values())
 
@@ -144,6 +129,6 @@ with open(network_data_filepath, mode='w', newline='') as log_file:
             total_delay
         ])
 
-traci.close()
+simulation.close_simulation()
 
 print("Simulation completed and data logged.")
