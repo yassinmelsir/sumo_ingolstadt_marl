@@ -47,12 +47,14 @@ with open(network_data_filepath, mode='w', newline='') as log_file:
     log_writer.writerow([
         "Simulation Time",
         "Total Vehicles",
-        "Passenger Vehicles",
+        "Passenger",
         "Trucks",
         "Buses",
         "Motorcycles",
         "Bicycles",
-        "Emergency Vehicles",
+        "Emergencies",
+        "Trailers",
+        "Deliveries",
         "Total Fuel Consumption (ml)",
         "Total CO2 Emission (mg)",
         "Total CO Emission (mg)",
@@ -76,7 +78,9 @@ with open(network_data_filepath, mode='w', newline='') as log_file:
             "bus": 0,
             "motorcycle": 0,
             "bicycle": 0,
-            "emergency": 0
+            "emergency": 0,
+            "trailer": 0,
+            "delivery": 0
         }
 
         total_fuel_consumption = 0.0
@@ -128,6 +132,8 @@ with open(network_data_filepath, mode='w', newline='') as log_file:
             vehicle_counts["motorcycle"],
             vehicle_counts["bicycle"],
             vehicle_counts["emergency"],
+            vehicle_counts["trailer"],
+            vehicle_counts["delivery"],
             total_fuel_consumption,
             total_co2_emission,
             total_co_emission,
