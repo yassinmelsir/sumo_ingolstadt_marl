@@ -103,7 +103,7 @@ class TrafficSignalControl:
 
 
 sim_name = 'network_info/2023-06-19'
-config_filepath = "/users/pdm523/sumo_ingolstadt_marl/src/environment/simulations/config/2023-06-19.sumocfg"
+config_filepath = "/users/pdm523/sumo_ingolstadt_marl/src/environment/simulations/Ingolstadt SUMO 365/2023-06-19.sumocfg"
 
 simulation = TrafficSignalControl(sim_name, config_filepath)
 simulation.start_simulation()
