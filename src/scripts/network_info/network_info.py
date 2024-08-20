@@ -4,10 +4,10 @@ import argparse
 
 from src.traffic_environment import TrafficEnvironment
 
-def main(sim_name: str, config_file_path: str):
-    simulation = TrafficEnvironment(sim_name, config_file_path)
-    network_data_filepath = os.path.join(simulation.output_dir, "vehicle_data.csv")
-    light_data_filepath = os.path.join(simulation.output_dir, "light_info.csv")
+def main(sim_name: str, config_file_path: str, data_file_path: str):
+    simulation = TrafficEnvironment(sim_name=sim_name, config_file_path=config_file_path, data_file_path=data_file_path)
+    network_data_filepath = os.path.join(simulation.data_file_path, "vehicle_data.csv")
+    light_data_filepath = os.path.join(simulation.data_file_path, "light_info.csv")
     os.makedirs(os.path.dirname(light_data_filepath), exist_ok=True)
     os.makedirs(os.path.dirname(network_data_filepath), exist_ok=True)
 
@@ -147,12 +147,22 @@ if __name__ == "__main__":
         help="The path to the configuration file"
     )
 
+    argparser.add_argument(
+        "--data_file_path",
+        type=str,
+        required=True,
+        help="The path to the configuration file"
+    )
+
     args = argparser.parse_args()
 
     sim_name = args.sim_name
     config_file_path = args.config_file_path
+    data_file_path = args.data_file_path
 
     print(f"Simulation Name: {sim_name}")
     print(f"Configuration File Path: {config_file_path}")
+    print(f"Data File Path: {data_file_path}")
 
-    main(sim_name=sim_name, config_file_path=config_file_path)
+
+    main(sim_name=sim_name, config_file_path=config_file_path, data_file_path=data_file_path)

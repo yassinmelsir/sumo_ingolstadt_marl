@@ -5,15 +5,15 @@ import subprocess
 
 
 class TrafficEnvironment:
-    def __init__(self, sim_name, config_file_name, root_dir, ignore_junction_blocker=False, output_dir='data', gui=False):
+    def __init__(self, sim_name: str, config_file_path: str, data_file_path: str, ignore_junction_blocker=False, gui=False):
         self.sim_name = sim_name
-        self.config_filepath = os.path.join(root_dir, f"{config_file_name}.py")
-        self.output_dir = os.path.join(output_dir, sim_name)
-        self.log_filepath = os.path.join(self.output_dir, "sim_log.log")
+        self.config_filepath = config_file_path
+        self.gui = gui
+        self.data_file_path = os.path.join(data_file_path, sim_name)
+        self.log_filepath = os.path.join(self.data_file_path, "sim_log.log")
         os.makedirs(os.path.dirname(self.log_filepath), exist_ok=True)
         self.sumo_cmd = "sumo" if not gui else "sumo-gui"
         self.simulation_running = False
-        self.gui = gui
         self.traci = traci
         self.ignore_junction_blocker = ignore_junction_blocker
 
