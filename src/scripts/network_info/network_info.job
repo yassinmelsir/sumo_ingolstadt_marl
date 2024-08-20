@@ -13,19 +13,19 @@
 
 # Define your arguments at the top of the script
 SIM_NAME="2023-06-19"
-ROOT_DIR="/Users/yme/York/IRP/sumo_ingolstadt_marl"
-CONFIG_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/src/sumo/2023-06-19.sumocfg"
-PYTHON_SCRIPT_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/src/scripts/network_info/network_info.py"
-DATA_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/data"
+ROOT_DIR="/users/pdm523/sumo_ingolstadt_marl"
+CONFIG_FILE_PATH="/users/pdm523/sumo_ingolstadt_marl/src/sumo/2023-06-19.sumocfg"
+PYTHON_SCRIPT_FILE_PATH="/users/pdm523/sumo_ingolstadt_marl/src/scripts/network_info/network_info.py"
+DATA_FILE_PATH="/users/pdm523/sumo_ingolstadt_marl/data"
 
 # Abort if any command fails
 set -e
 
-## Purge any previously loaded modules
-#module purge
-#
-## Load modules
-#module load SUMO
+### Purge any previously loaded modules
+module purge
+
+### Load modules
+module load SUMO
 
 export PYTHONPATH="${PYTHONPATH}:${ROOT_DIR}"
 
