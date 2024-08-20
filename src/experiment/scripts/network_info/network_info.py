@@ -1,10 +1,10 @@
 import csv
 import os
 
-from src.sumo.simulations.TrafficSignalControl import TrafficSignalControl
+from src.environment.simulations.TrafficSignalControl import TrafficSignalControl
 
 sim_name = 'network_info/2023-06-19'
-config_filepath = "/users/pdm523/sumo_ingolstadt_marl/src/sumo/simulations/config/2023-06-19.sumocfg"
+config_filepath = "/src/environment/simulations/config/2023-06-19.sumocfg"
 
 simulation = TrafficSignalControl(sim_name, config_filepath)
 

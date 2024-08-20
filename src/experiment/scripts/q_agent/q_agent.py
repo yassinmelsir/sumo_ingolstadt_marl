@@ -4,7 +4,7 @@ import torch.optim as optim
 import numpy as np
 
 from src.algorithms.q_agent.q_network import QNetwork
-from src.sumo.sumo_simulation.sumo_simulation import SumoSimulation
+from src.environment.sumo_simulation.sumo_simulation import SumoSimulation
 
 
 def select_action(state, epsilon):
@@ -42,7 +42,7 @@ def optimize_model(state, action, reward, next_state, done, gamma=0.99):
     optimizer.step()
 
 sim_name = '2023-06-19'
-config_filepath = "../../../sumo/simulations/config/2023-06-19.sumocfg"
+config_filepath = "../../../environment/simulations/config/2023-06-19.sumocfg"
 gui = False
 
 num_episodes = 1000

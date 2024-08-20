@@ -1,19 +1,18 @@
 import os
-
 import numpy as np
 import traci
 import subprocess
 
 
 class TrafficSignalControl:
-    def __init__(self, sim_name, config_filepath, gui=False):
+    def __init__(self, sim_name, config_filepath, output_dir='', gui=False):
         self.sim_name = sim_name
         self.config_filepath = config_filepath
         self.gui = gui
-        self.output_dir = os.path.join("base", sim_name)
+        self.output_dir = os.path.join(output_dir, sim_name)
         self.log_filepath = os.path.join(self.output_dir, "sim_log.log")
         os.makedirs(os.path.dirname(self.log_filepath), exist_ok=True)
-        self.sumo_cmd = "simulations" if not gui else "simulations-gui"
+        self.sumo_cmd = "sumo" if not gui else "sumo-gui"
         self.simulation_running = False
         self.traci = traci
 
@@ -27,6 +26,7 @@ class TrafficSignalControl:
             self._start_xquartz()
 
         sumoCmd = [self.sumo_cmd, "-c", self.config_filepath, "-l", self.log_filepath]
+        print("SUMO Command:", sumoCmd)
         self.traci.start(sumoCmd)
         self.simulation_running = True
 
@@ -100,3 +100,10 @@ class TrafficSignalControl:
         observation_vector = np.array(observation)
 
         return observation_vector
+
+
+sim_name = 'network_info/2023-06-19'
+config_filepath = "/users/pdm523/sumo_ingolstadt_marl/src/environment/simulations/config/2023-06-19.sumocfg"
+
+simulation = TrafficSignalControl(sim_name, config_filepath)
+simulation.start_simulation()
