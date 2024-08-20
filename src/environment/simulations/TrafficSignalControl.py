@@ -5,7 +5,7 @@ import subprocess
 
 
 class TrafficSignalControl:
-    def __init__(self, sim_name, config_filepath, output_dir='', gui=False):
+    def __init__(self, sim_name, config_filepath, ignore_junction_blocker=False, output_dir='', gui=False):
         self.sim_name = sim_name
         self.config_filepath = config_filepath
         self.gui = gui
@@ -15,6 +15,7 @@ class TrafficSignalControl:
         self.sumo_cmd = "sumo" if not gui else "sumo-gui"
         self.simulation_running = False
         self.traci = traci
+        self.ignore_junction_blocker = ignore_junction_blocker
 
     def _start_xquartz(self):
         result = subprocess.run(["open", "-a", "XQuartz"], capture_output=True, text=True)
@@ -26,6 +27,10 @@ class TrafficSignalControl:
             self._start_xquartz()
 
         sumoCmd = [self.sumo_cmd, "-c", self.config_filepath, "-l", self.log_filepath]
+
+        if self.ignore_junction_blocker:
+            sumoCmd.extend(["--ignore-junction-blocker", "15"])
+
         print("SUMO Command:", sumoCmd)
         self.traci.start(sumoCmd)
         self.simulation_running = True
@@ -103,7 +108,7 @@ class TrafficSignalControl:
 
 
 sim_name = 'network_info/2023-06-19'
-config_filepath = "/users/pdm523/sumo_ingolstadt_marl/src/environment/simulations/Ingolstadt SUMO 365/2023-06-19.sumocfg"
-
-simulation = TrafficSignalControl(sim_name, config_filepath)
+config_filepath = "/users/pdm523/sumo_ingolstadt_marl/src/environment/simulations/24h_sim.sumocfg"
+ignore_junction_blocker = True
+simulation = TrafficSignalControl(sim_name=sim_name, config_filepath=config_filepath, ignore_junction_blocker=ignore_junction_blocker)
 simulation.start_simulation()
