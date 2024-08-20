@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#SBATCH --job-name=my-sumo-sim               # Job name
+#SBATCH --partition=nodes                    # What partition the job should run on
+#SBATCH --time=0-06:00:00                    # Time limit (DD-HH:MM:SS)
+#SBATCH --ntasks=1                           # Number of MPI tasks to request
+#SBATCH --cpus-per-task=4                    # Number of CPU cores per MPI task
+#SBATCH --mem=32G                            # Total memory to request
+#SBATCH --account=cs-smartsig-2014           # Project account to use
+#SBATCH --mail-type=END,FAIL                 # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=pdm523@york.ac.uk        # Where to send mail
+#SBATCH --output=%x-%j.log                   # Standard output log
+#SBATCH --error=%x-%j.err                    # Standard error log
+
+# Define your arguments at the top of the script
+SCRIPT_NAME="network_info"
+SIM_NAME="2023-06-19"
+CONFIG_FILENAME="2023-06-19"
+ROOT_DIR="/Users/yme/York/IRP/sumo_ingolstadt_marl"
+
+PYTHON_SCRIPT="${ROOT_DIR}/src/scripts/${SCRIPT_NAME}/${SCRIPT_NAME}.py"
+CONFIG_FILE_PATH="${ROOT_DIR}/src/sumo/${CONFIG_FILENAME}"
+
+
+# Abort if any command fails
+set -e
+
+## Purge any previously loaded modules
+#module purge
+#
+## Load modules
+#module load SUMO
+
+export PYTHONPATH="${PYTHONPATH}:${ROOT_DIR}"
+
+# Commands to run
+python $PYTHON_SCRIPT --sim_name $SIM_NAME --config_file_path $CONFIG_FILE_PATH

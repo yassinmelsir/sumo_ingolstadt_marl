@@ -4,16 +4,16 @@ import traci
 import subprocess
 
 
-class TrafficSignalControl:
-    def __init__(self, sim_name, config_filepath, ignore_junction_blocker=False, output_dir='', gui=False):
+class TrafficEnvironment:
+    def __init__(self, sim_name, config_file_name, root_dir, ignore_junction_blocker=False, output_dir='data', gui=False):
         self.sim_name = sim_name
-        self.config_filepath = config_filepath
-        self.gui = gui
+        self.config_filepath = os.path.join(root_dir, f"{config_file_name}.py")
         self.output_dir = os.path.join(output_dir, sim_name)
         self.log_filepath = os.path.join(self.output_dir, "sim_log.log")
         os.makedirs(os.path.dirname(self.log_filepath), exist_ok=True)
         self.sumo_cmd = "sumo" if not gui else "sumo-gui"
         self.simulation_running = False
+        self.gui = gui
         self.traci = traci
         self.ignore_junction_blocker = ignore_junction_blocker
 
@@ -34,6 +34,7 @@ class TrafficSignalControl:
         print("SUMO Command:", sumoCmd)
         self.traci.start(sumoCmd)
         self.simulation_running = True
+        print(f"Simulation Running: {self.simulation_running}")
 
     def step(self):
         if not self.simulation_running:
@@ -105,10 +106,3 @@ class TrafficSignalControl:
         observation_vector = np.array(observation)
 
         return observation_vector
-
-
-sim_name = 'network_info/2023-06-19'
-config_filepath = "/users/pdm523/sumo_ingolstadt_marl/src/environment/simulations/24h_sim.sumocfg"
-ignore_junction_blocker = True
-simulation = TrafficSignalControl(sim_name=sim_name, config_filepath=config_filepath, ignore_junction_blocker=ignore_junction_blocker)
-simulation.start_simulation()
