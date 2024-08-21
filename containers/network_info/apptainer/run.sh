@@ -12,4 +12,5 @@ apptainer exec --bind $SIMULATION_MOUNT_PATH \
                       python3 src/procedures/network_info/network_info.py \
                       --sim_name $SIM_NAME \
                       --config_file_path $CONFIG_FILE_PATH \
-                      --data_file_path $DATA_FILE_PATH"
+                      --data_file_path $DATA_FILE_PATH \
+                      --threads 4"

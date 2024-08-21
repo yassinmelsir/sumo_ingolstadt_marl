@@ -4,5 +4,6 @@ ROOT_DIR="/Users/yme/York/IRP/sumo_ingolstadt_marl/"
 
 docker buildx build -t $IMAGE_NAME \
   -f $DOCKERFILE_PATH \
-  --platform linux/amd64,linux/arm64 \
+  --platform linux/amd64 \
+  --push \
   $ROOT_DIR

@@ -5,7 +5,7 @@ import subprocess
 
 
 class TrafficEnvironment:
-    def __init__(self, sim_name: str, config_file_path: str, data_file_path: str, ignore_junction_blocker=False, gui=False):
+    def __init__(self, sim_name: str, config_file_path: str, data_file_path: str, threads=None, gui=False):
         self.sim_name = sim_name
         self.config_filepath = config_file_path
         self.gui = gui
@@ -15,7 +15,7 @@ class TrafficEnvironment:
         self.sumo_cmd = "sumo" if not gui else "sumo-gui"
         self.simulation_running = False
         self.traci = traci
-        self.ignore_junction_blocker = ignore_junction_blocker
+        self.threads = threads if threads is None else int(threads)
 
     def _start_xquartz(self):
         result = subprocess.run(["open", "-a", "XQuartz"], capture_output=True, text=True)
@@ -28,8 +28,8 @@ class TrafficEnvironment:
 
         sumoCmd = [self.sumo_cmd, "-c", self.config_filepath, "-l", self.log_filepath, "--verbose"]
 
-        if self.ignore_junction_blocker:
-            sumoCmd.extend(["--ignore-junction-blocker", "15"])
+        if self.threads is not None:
+            sumoCmd.extend(["--device.rerouting.threads", self.threads])
 
         print("SUMO Command:", sumoCmd)
         self.traci.start(sumoCmd)

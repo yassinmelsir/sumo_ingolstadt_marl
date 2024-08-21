@@ -4,8 +4,8 @@ import argparse
 
 from src.traffic_environment import TrafficEnvironment
 
-def main(sim_name: str, config_file_path: str, data_file_path: str):
-    simulation = TrafficEnvironment(sim_name=sim_name, config_file_path=config_file_path, data_file_path=data_file_path)
+def main(sim_name: str, config_file_path: str, data_file_path: str, threads=None):
+    simulation = TrafficEnvironment(sim_name=sim_name, config_file_path=config_file_path, data_file_path=data_file_path, threads=threads)
     network_data_filepath = os.path.join(simulation.data_file_path, "vehicle_data.csv")
     light_data_filepath = os.path.join(simulation.data_file_path, "light_info.csv")
     os.makedirs(os.path.dirname(light_data_filepath), exist_ok=True)
@@ -151,7 +151,14 @@ if __name__ == "__main__":
         "--data_file_path",
         type=str,
         required=True,
-        help="The path to the configuration file"
+        help="The path to the data store"
+    )
+
+    argparser.add_argument(
+        "--threads",
+        type=int,
+        required=True,
+        help="The number of threads"
     )
 
     args = argparser.parse_args()
@@ -159,10 +166,11 @@ if __name__ == "__main__":
     sim_name = args.sim_name
     config_file_path = args.config_file_path
     data_file_path = args.data_file_path
+    threads = args.threads
 
     print(f"Simulation Name: {sim_name}")
     print(f"Configuration File Path: {config_file_path}")
     print(f"Data File Path: {data_file_path}")
 
 
-    main(sim_name=sim_name, config_file_path=config_file_path, data_file_path=data_file_path)
+    main(sim_name=sim_name, config_file_path=config_file_path, data_file_path=data_file_path, threads=threads)
