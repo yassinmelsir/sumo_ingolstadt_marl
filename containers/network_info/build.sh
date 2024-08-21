@@ -1,4 +1,4 @@
-DOCKERFILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/scripts/network_info/Dockerfile"
+DOCKERFILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/containers/network_info/Dockerfile"
 IMAGE_NAME="yassinmelsir/simulation-marl-ni:latest"
 ROOT_DIR="/Users/yme/York/IRP/sumo_ingolstadt_marl/"
 
