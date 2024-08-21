@@ -11,14 +11,9 @@
 #SBATCH --output=%x-%j.log                   # Standard output log
 #SBATCH --error=%x-%j.err                    # Standard error log
 
-# Define your arguments at the top of the script
-SIM_NAME="2023-06-19"
-ROOT_DIR="/Users/yme/York/IRP/sumo_ingolstadt_marl"
-CONFIG_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/sumo/2023-06-19.sumocfg"
-PYTHON_SCRIPT_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/src/procedures/network_info/network_info.py"
-DATA_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/data/network_info"
-
-# Abort if any command fails
 set -e
 
-/bin/sh dockerscript.sh
+module purge
+module load Apptainer/latest
+
+/bin/bash /users/pdm523/sumo_ingolstadt_marl/containers/network_info/apptainer/run.sh
