@@ -26,7 +26,7 @@ class TrafficEnvironment:
         if self.gui:
             self._start_xquartz()
 
-        sumoCmd = [self.sumo_cmd, "-c", self.config_filepath, "-l", self.log_filepath, "--verbose", "true"]
+        sumoCmd = [self.sumo_cmd, "-c", self.config_filepath, "-l", self.log_filepath, "--verbose"]
 
         if self.ignore_junction_blocker:
             sumoCmd.extend(["--ignore-junction-blocker", "15"])

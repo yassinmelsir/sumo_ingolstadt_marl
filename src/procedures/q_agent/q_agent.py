@@ -42,7 +42,7 @@ def optimize_model(state, action, reward, next_state, done, gamma=0.99):
     optimizer.step()
 
 sim_name = '2023-06-19'
-config_filepath = "../../../sumo/simulations/config/2023-06-19.sumocfg"
+config_filepath = "../../../simulation/simulations/config/2023-06-19.sumocfg"
 gui = False
 
 num_episodes = 1000

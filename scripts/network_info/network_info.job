@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#SBATCH --job-name=my-sumo-sim               # Job name
+#SBATCH --job-name=my-simulation-sim               # Job name
 #SBATCH --partition=nodes                    # What partition the job should run on
 #SBATCH --time=0-06:00:00                    # Time limit (DD-HH:MM:SS)
 #SBATCH --ntasks=1                           # Number of MPI tasks to request
@@ -14,21 +14,11 @@
 # Define your arguments at the top of the script
 SIM_NAME="2023-06-19"
 ROOT_DIR="/Users/yme/York/IRP/sumo_ingolstadt_marl"
-CONFIG_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/src/sumo/2023-06-19.sumocfg"
+CONFIG_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/sumo/2023-06-19.sumocfg"
 PYTHON_SCRIPT_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/src/procedures/network_info/network_info.py"
-DATA_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/data"
+DATA_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/data/network_info"
 
 # Abort if any command fails
 set -e
 
-## Purge any previously loaded modules
-#module purge
-#
-## Load modules
-#module load SUMO
-
-export PYTHONPATH="${PYTHONPATH}:${ROOT_DIR}"
-
-# Commands to run
-python $PYTHON_SCRIPT_FILE_PATH --sim_name $SIM_NAME \
- --config_file_path $CONFIG_FILE_PATH --data_file_path $DATA_FILE_PATH
+/bin/sh dockerscript.sh
