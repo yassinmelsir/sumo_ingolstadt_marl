@@ -171,6 +171,7 @@ if __name__ == "__main__":
     print(f"Simulation Name: {sim_name}")
     print(f"Configuration File Path: {config_file_path}")
     print(f"Data File Path: {data_file_path}")
+    print(f"Threads: {threads}")
 
 
     main(sim_name=sim_name, config_file_path=config_file_path, data_file_path=data_file_path, threads=threads)

@@ -26,10 +26,10 @@ class TrafficEnvironment:
         if self.gui:
             self._start_xquartz()
 
-        sumoCmd = [self.sumo_cmd, "-c", self.config_filepath, "-l", self.log_filepath, "--verbose"]
+        sumoCmd = [self.sumo_cmd, "-c", self.config_filepath, "-l", self.log_filepath, "--verbose", "true"]
 
         if self.threads is not None:
-            sumoCmd.extend(["--device.rerouting.threads", self.threads])
+            sumoCmd.extend(["--threads", f"{self.threads}"])
 
         print("SUMO Command:", sumoCmd)
         self.traci.start(sumoCmd)
