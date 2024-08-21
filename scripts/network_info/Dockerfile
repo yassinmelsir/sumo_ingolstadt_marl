@@ -6,8 +6,6 @@ COPY ./src ./
 
 RUN apt-get update && apt-get install -y sumo
 
-COPY ./scripts/network_info/requirements.txt ./
-
 RUN pip install --no-cache-dir traci numpy
 
 ENV PYTHONPATH="${PYTHONPATH}:/usr/"
