@@ -15,7 +15,7 @@
 SIM_NAME="2023-06-19"
 ROOT_DIR="/Users/yme/York/IRP/sumo_ingolstadt_marl"
 CONFIG_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/src/sumo/2023-06-19.sumocfg"
-PYTHON_SCRIPT_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/src/scripts/network_info/network_info.py"
+PYTHON_SCRIPT_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/src/procedures/network_info/network_info.py"
 DATA_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/data"
 
 # Abort if any command fails
