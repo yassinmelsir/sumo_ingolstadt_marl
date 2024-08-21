@@ -11,9 +11,6 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     python3-numpy
 
-ENV SUMO_HOME=/usr/share/sumo
-#ENV PYTHONPATH="${PYTHONPATH}:/usr/app/"
-
 COPY ./src /usr/app/src
 COPY ./simulation /usr/app/simulation
 
@@ -24,6 +21,9 @@ ARG DATA_FILE_PATH
 ENV SIM_NAME=${SIM_NAME}
 ENV CONFIG_FILE_PATH=${CONFIG_FILE_PATH}
 ENV DATA_FILE_PATH=${DATA_FILE_PATH}
+
+ENV SUMO_HOME=/usr/share/sumo
+ENV PYTHONPATH="${PYTHONPATH}:/usr/app/"
 
 
 CMD ["sh", "-c", \
