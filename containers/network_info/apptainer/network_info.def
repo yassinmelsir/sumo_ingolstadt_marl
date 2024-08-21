@@ -1,0 +1,30 @@
+Bootstrap: docker
+From: ubuntu:latest
+
+%environment
+    export SUMO_HOME=/usr/share/sumo
+    export PYTHONPATH="${PYTHONPATH}:/usr/app/"
+    export SIM_NAME=${SIM_NAME}
+    export CONFIG_FILE_PATH=${CONFIG_FILE_PATH}
+    export DATA_FILE_PATH=${DATA_FILE_PATH}
+
+%post
+    apt-get update && apt-get install -y \
+        sumo \
+        sumo-tools \
+        sumo-doc \
+        python3-pip \
+        build-essential \
+        python3-dev \
+        python3-numpy
+
+    mkdir -p /usr/app/src
+    mkdir -p /usr/app/simulation
+
+%files
+    /users/pdm523/sumo_ingolstadt_marl/src /usr/app/src
+    /users/pdm523/sumo_ingolstadt_marl/simulation /usr/app/simulation
+
+%runscript
+    exec python3 /usr/app/src/procedures/network_info/network_info.py \
+    --sim_name $SIM_NAME --config_file_path $CONFIG_FILE_PATH --data_file_path $DATA_FILE_PATH
