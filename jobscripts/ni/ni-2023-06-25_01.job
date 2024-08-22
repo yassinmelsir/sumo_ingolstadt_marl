@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#SBATCH --job-name=ni-2023-06-25_01            # Job name
+#SBATCH --partition=nodes                    # What partition the job should run on
+#SBATCH --time=0-12:00:00                    # Time limit (DD-HH:MM:SS)
+#SBATCH --ntasks=1                           # Number of MPI tasks to request
+#SBATCH --cpus-per-task=18                   # Number of CPU cores per MPI task
+#SBATCH --mem-per-cpu=8G                     # Memory per CPU core
+#SBATCH --account=cs-smartsig-2014           # Project account to use
+#SBATCH --mail-type=END,FAIL                 # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=pdm523@york.ac.uk        # Where to send mail
+#SBATCH --output=%x-%j.log                   # Standard output log
+#SBATCH --error=%x-%j.err                    # Standard error log
+
+export SIM_NAME="network_info/2023-06-25_01"
+export CONTAINER_CONFIG_FILE_PATH="/usr/app/simulation/Ingolstadt_SUMO_365/2023-06-25.sumocfg"
+export CORES=8
+
+set -e
+
+module purge
+
+/bin/bash /users/pdm523/sumo_ingolstadt_marl/containers/network_info/apptainer/js.sh \
+ --SIM_NAME $SIM_NAME --CONTAINER_CONFIG_FILE_PATH $CONTAINER_CONFIG_FILE_PATH

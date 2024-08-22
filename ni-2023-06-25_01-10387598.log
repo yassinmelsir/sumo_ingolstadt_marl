@@ -1,0 +1,10 @@
+Loading configuration ... done.
+***Starting server on port 40711 ***
+Loading net-file from '/usr/app/simulation/Ingolstadt_SUMO_365/ingolstadt_net.net.xml' ... done (3865ms).
+Loading additional-files from '/usr/app/simulation/Ingolstadt_SUMO_365/TL/2023-06-25_tlLogics_24h.tll.xml' ... done (42ms).
+Loading additional-files from '/usr/app/simulation/Ingolstadt_SUMO_365/TL/2023-06-25_WAUT.xml' ... done (4ms).
+Loading additional-files from '/usr/app/simulation/Ingolstadt_SUMO_365/PT/pt_stops.add.xml' ... done (17ms).
+Loading additional-files from '/usr/app/simulation/Ingolstadt_SUMO_365/PT/2023-06-25_gtfs_trips.rou.xml' ... 
+done (146ms).
+Loading done.
+Simulation version 1.18.0 started with time: 0.00.
