@@ -1,14 +1,13 @@
-SIM_NAME="network_info/2023-06-19"
-CONFIG_FILE_PATH="/usr/app/simulation/24h_sim.sumocfg"
+SIM_NAME="network_info/24h_sim"
+LOCAL_DATA_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/data"
+LOCAL_SIMULATION_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/simulation"
+IMAGE_NAME="yassinmelsir/simulation-marl-ni:latest"
+
+CONTAINER_CONFIG_FILE_PATH="/usr/app/simulation/24h_sim.sumocfg"
 CONTAINER_DATA_FILE_PATH="/usr/app/data/"
 CONTAINER_SIMULATION_FILE_PATH="/usr/app/simulation/"
 
-LOCAL_DATA_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/data"
-LOCAL_SIMULATION_FILE_PATH="/Users/yme/York/IRP/sumo_ingolstadt_marl/simulation"
-
-IMAGE_NAME="yassinmelsir/simulation-marl-ni:latest"
-
-SUMO_CMD="/usr/bin/sumo -c $CONFIG_FILE_PATH --threads 2 --device.rerouting.threads 1 --verbose true --end 2000"
+SUMO_CMD="/usr/bin/sumo -c $CONTAINER_CONFIG_FILE_PATH --threads 2 --device.rerouting.threads 1 --verbose true"
 
 RUN_SCRIPT="python3 /usr/app/src/procedures/network_info/main.py \
                       --sumo_cmd \"${SUMO_CMD}\" \

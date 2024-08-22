@@ -13,6 +13,7 @@ def write_light_data(light_data: List, data_file_path: str):
         log_writer.writerow(["Traffic Light Id", "Controlled Lanes", "Number of Phases"])
         log_writer.writerows(light_data)
 
+
 def write_vehicle_data(vehicle_data: List, data_file_path: str):
     network_data_filepath = os.path.join(data_file_path, "vehicle_data.csv")
     os.makedirs(os.path.dirname(network_data_filepath), exist_ok=True)
@@ -41,6 +42,7 @@ def write_vehicle_data(vehicle_data: List, data_file_path: str):
         ])
         log_writer.writerows(vehicle_data)
 
+
 def record_light_data(light_data, simulation):
     traffic_light_ids = simulation.traci.trafficlight.getIDList()
 
@@ -49,27 +51,25 @@ def record_light_data(light_data, simulation):
         num_phases = len(simulation.traci.trafficlight.getCompleteRedYellowGreenDefinition(tl_id)[0].phases)
         light_data.append([tl_id, controlled_lanes, num_phases])
 
-def record_step_data(simulation, vehicle_data):
+
+def record_step_data(simulation, vehicle_data, efficiency_statistics):
     simulation_time = simulation.traci.simulation.getTime()
     vehicle_ids = simulation.traci.vehicle.getIDList()
 
     vehicle_counts = defaultdict(int)
-    total_fuel_consumption = total_co2_emission = total_co_emission = 0.0
-    total_hc_emission = total_nox_emission = total_pmx_emission = 0.0
-    total_trip_time = total_delay = 0.0
 
     for vid in vehicle_ids:
         vehicle_type = simulation.traci.vehicle.getVehicleClass(vid)
         vehicle_counts[vehicle_type] += 1
 
-        total_fuel_consumption += simulation.traci.vehicle.getFuelConsumption(vid)
-        total_co2_emission += simulation.traci.vehicle.getCO2Emission(vid)
-        total_co_emission += simulation.traci.vehicle.getCOEmission(vid)
-        total_hc_emission += simulation.traci.vehicle.getHCEmission(vid)
-        total_nox_emission += simulation.traci.vehicle.getNOxEmission(vid)
-        total_pmx_emission += simulation.traci.vehicle.getPMxEmission(vid)
-        total_trip_time += simulation.traci.vehicle.getAccumulatedWaitingTime(vid)
-        total_delay += simulation.traci.vehicle.getTimeLoss(vid)
+        efficiency_statistics["total_fuel_consumption"] += simulation.traci.vehicle.getFuelConsumption(vid)
+        efficiency_statistics["total_co2_emission"] += simulation.traci.vehicle.getCO2Emission(vid)
+        efficiency_statistics["total_co_emission"] += simulation.traci.vehicle.getCOEmission(vid)
+        efficiency_statistics["total_hc_emission"] += simulation.traci.vehicle.getHCEmission(vid)
+        efficiency_statistics["total_nox_emission"] += simulation.traci.vehicle.getNOxEmission(vid)
+        efficiency_statistics["total_pmx_emission"] += simulation.traci.vehicle.getPMxEmission(vid)
+        efficiency_statistics["total_trip_time"] += simulation.traci.vehicle.getAccumulatedWaitingTime(vid)
+        efficiency_statistics["total_delay"] += simulation.traci.vehicle.getTimeLoss(vid)
 
     total_vehicles = sum(vehicle_counts.values())
 
@@ -84,12 +84,12 @@ def record_step_data(simulation, vehicle_data):
         vehicle_counts["emergency"],
         vehicle_counts["trailer"],
         vehicle_counts["delivery"],
-        total_fuel_consumption,
-        total_co2_emission,
-        total_co_emission,
-        total_hc_emission,
-        total_nox_emission,
-        total_pmx_emission,
-        total_trip_time,
-        total_delay
+        efficiency_statistics["total_fuel_consumption"],
+        efficiency_statistics["total_co2_emission"],
+        efficiency_statistics["total_co_emission"],
+        efficiency_statistics["total_hc_emission"],
+        efficiency_statistics["total_nox_emission"],
+        efficiency_statistics["total_pmx_emission"],
+        efficiency_statistics["total_trip_time"],
+        efficiency_statistics["total_delay"],
     ])

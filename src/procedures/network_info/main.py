@@ -1,4 +1,6 @@
 import argparse
+from collections import defaultdict
+
 from src.procedures.network_info.general import record_light_data, write_light_data, record_step_data, \
     write_vehicle_data
 from src.traffic_environment import TrafficEnvironment
@@ -8,21 +10,27 @@ def main(sumo_cmd: str, data_file_path: str):
     print(sumo_cmd)
     simulation = TrafficEnvironment(sumo_cmd=sumo_cmd)
     simulation.start_simulation()
-    light_data = []
     vehicle_data = []
+    efficiency_statistics = defaultdict(int)
 
-    record_light_data(light_data=light_data, simulation=simulation)
-    write_light_data(light_data=light_data, data_file_path=data_file_path)
+    # light_data = []
+    # record_light_data(light_data=light_data, simulation=simulation)
+    # write_light_data(light_data=light_data, data_file_path=data_file_path)
+
+    time_interval = 60
+    last_recorded_time = 0
 
     while simulation.simulation_running:
         simulation.step()
-        record_step_data(simulation=simulation, vehicle_data=vehicle_data)
+        current_time = simulation.traci.simulation.getTime()
+
+        if current_time - last_recorded_time >= time_interval:
+            record_step_data(simulation=simulation, vehicle_data=vehicle_data,
+                             efficiency_statistics=efficiency_statistics)
+            write_vehicle_data(vehicle_data=vehicle_data, data_file_path=data_file_path)
+            last_recorded_time = current_time
 
     simulation.close_simulation()
-
-    write_vehicle_data(vehicle_data=vehicle_data, data_file_path=data_file_path)
-
-    print("Simulation completed and data written!")
 
 
 if __name__ == "__main__":
