@@ -14,5 +14,7 @@ RUN apt-get update && apt-get install -y \
 COPY ./src /usr/app/src
 COPY ./simulation /usr/app/simulation
 
+RUN mkdir /usr/app/data
+
 ENV SUMO_HOME=/usr/share/sumo
 ENV PYTHONPATH="${PYTHONPATH}:/usr/app/"
