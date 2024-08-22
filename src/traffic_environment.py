@@ -5,17 +5,11 @@ import subprocess
 
 
 class TrafficEnvironment:
-    def __init__(self, sim_name: str, config_file_path: str, data_file_path: str, threads=None, gui=False):
-        self.sim_name = sim_name
-        self.config_filepath = config_file_path
+    def __init__(self, sumo_cmd: str, gui=False):
         self.gui = gui
-        self.data_file_path = os.path.join(data_file_path, sim_name)
-        self.log_filepath = os.path.join(self.data_file_path, "sim_log.log")
-        os.makedirs(os.path.dirname(self.log_filepath), exist_ok=True)
-        self.sumo_cmd = "sumo" if not gui else "sumo-gui"
+        self.sumo_cmd = sumo_cmd.split()
         self.simulation_running = False
         self.traci = traci
-        self.threads = threads if threads is None else int(threads)
 
     def _start_xquartz(self):
         result = subprocess.run(["open", "-a", "XQuartz"], capture_output=True, text=True)
@@ -26,13 +20,8 @@ class TrafficEnvironment:
         if self.gui:
             self._start_xquartz()
 
-        sumoCmd = [self.sumo_cmd, "-c", self.config_filepath, "-l", self.log_filepath, "--verbose", "true"]
-
-        if self.threads is not None:
-            sumoCmd.extend(["--threads", f"{self.threads}"])
-
-        print("SUMO Command:", sumoCmd)
-        self.traci.start(sumoCmd)
+        print("SUMO Command:", self.sumo_cmd)
+        self.traci.start(self.sumo_cmd)
         self.simulation_running = True
         print(f"Simulation Running: {self.simulation_running}")
 
