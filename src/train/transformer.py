@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
     max_obs_len = max([step.shape[0] for run in sumo_runs for step in run])
     for index, run in enumerate(sumo_runs):
-        padding = np.zeros(num_heads - (run.shape[0]) % num_heads)
+        padding = np.zeros(shape=(1, num_heads - (run.shape[0]) % num_heads))
         sumo_runs[index] = np.concatenate((run, padding))
 
     breakpoint()
