@@ -1,9 +1,9 @@
 import argparse
 from collections import defaultdict
 
-from src.procedures.network_info.general import record_light_data, write_light_data, record_step_data, \
+from src.network_info.general import record_step_data, \
     write_vehicle_data
-from src.traffic_environment import TrafficEnvironment
+from src.network_info.traffic_environment import TrafficEnvironment
 
 
 def main(sumo_cmd: str, data_file_path: str):
